@@ -5,7 +5,6 @@ RUN apt install -y curl
 RUN apt install -y jq
 WORKDIR /usr/src/app
 
-COPY mod-commit-push-pr.sh ./
-RUN chmod a+x mod-commit-push-pr.sh
-CMD ["/bin/bash", "./mod-commit-push-pr.sh"]
+ADD mod-commit-push-pr.sh /mod-commit-push-pr.sh
+ENTRYPOINT ["/mod-commit-push-pr.sh"]
 
