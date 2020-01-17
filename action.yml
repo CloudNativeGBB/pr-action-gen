@@ -1,0 +1,32 @@
+# action.yml
+name: 'Pull, Modify, and Create PR'
+author: 'Joey Schluchter'
+branding:
+  icon: 'anchor'
+  color: 'green'
+description: 'Pull a repo, modify a specific file, then create a PR'
+inputs:
+  ghuser:
+    description: 'Github user'
+    required: false
+  ghusertoken:
+    description: 'Github user token'
+    required: false
+  ghpkgtoken:
+    description: 'Github package token'
+    required: false
+  ghuseremail:
+    description: 'Github user email'
+    required: false
+  ghusername:
+    description: 'Github user name'
+    required: false
+  pkgname:
+    description: 'docker pkg name'
+    required: false
+outputs:
+  time: # id of output
+    description: 'The time we finished the action'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
