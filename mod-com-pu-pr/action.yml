@@ -1,0 +1,15 @@
+# action.yml
+name: 'Pull, Modify, and Create PR'
+description: 'Pull a repo and modify a specific file, then create a PR'
+outputs:
+  time: # id of output
+    description: 'The time we finished the action'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ secrets.GH_USER }}
+    - ${{ secrets.GH_USER_TOKEN }}
+    - ${{ secrets.GH_PKG_TOKEN }}
+    - ${{ secrets.GH_USER_EMAIL }}
+    - ${{ secrets.GH_USER_NAME }}
