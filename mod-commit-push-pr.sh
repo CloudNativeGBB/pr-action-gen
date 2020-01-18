@@ -27,7 +27,7 @@ git commit -m 'new change detected, bumping to new release version'
 git push origin $TAG
 
 #DO THE PR
-# PR_BODY=('{"title": "PR Auto generated based on new release","body": "New release PR","head": "'"$TAG"'","base": "master"}')
-# curl -u $1:$2 -d "${PR_BODY}" -H 'Content-Type: application/json' https://api.github.com/repos/cloudnativegbb/app-baseline/pulls
-# time=$(date)
+PR_BODY=('{"title": "PR Auto generated based on new release","body": "New release PR","head": "'"$TAG"'","base": "master"}')
+curl -u $1:$2 -d "${PR_BODY}" -H 'Content-Type: application/json' https://api.github.com/repos/cloudnativegbb/app-baseline/pulls
+time=$(date)
 echo ::set-output name=time::'now'
