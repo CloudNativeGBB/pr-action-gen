@@ -1,8 +1,17 @@
 #!/bin/bash
 
 echo "" # see https://github.com/actions/toolkit/issues/168
+
+
+
+  sanitize "${INPUT_GHUSER}" "githubuser"
+  sanitize "${INPUT_GHUSEREMAIL}" "githubuser email"
+  sanitize "${INPUT_GHUSERNAME}" "githubuser name"
+
 GH_USER="${INPUT_GHUSER}"
+echo "${INPUT_GHUSER}"
 GH_USER_EMAIL="${INPUT_GHUSEREMAIL}"
+echo "${INPUT_GHUSEREMAIL}"
 GH_USER_NAME="${INPUT_GHUSERNAME}"
 GH_USER_TOKEN="${INPUT_GHUSERTOKEN}"
 GH_PKG_NAME="${INPUT_PKGNAME}"
@@ -31,3 +40,10 @@ PR_BODY=('{"title": "PR Auto generated based on new release","body": "New releas
 curl -u $1:$2 -d "${PR_BODY}" -H 'Content-Type: application/json' https://api.github.com/repos/cloudnativegbb/app-baseline/pulls
 time=$(date)
 echo ::set-output name=time::'now'
+
+function sanitize() {
+  if [ -z "${1}" ]; then
+    >&2 echo "Unable to find the ${2}. Did you set with.${2}?"
+    exit 1
+  fi
+}
