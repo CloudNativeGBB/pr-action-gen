@@ -1,3 +1,4 @@
+#!/bin/bash
 
 echo "" # see https://github.com/actions/toolkit/issues/168
 GH_USER=$INPUT_GHUSER
