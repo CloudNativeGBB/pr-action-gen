@@ -2,11 +2,16 @@
 
 echo "" # see https://github.com/actions/toolkit/issues/168
 
+function sanitize() {
+    if [ -z "${1}" ]; then
+        echo >&2 "Unable to find the ${2}. Did you set with.${2}?"
+        exit 1
+    fi
+}
 
-
-  sanitize "${INPUT_GHUSER}" "githubuser"
-  sanitize "${INPUT_GHUSEREMAIL}" "githubuser email"
-  sanitize "${INPUT_GHUSERNAME}" "githubuser name"
+sanitize "${INPUT_GHUSER}" "githubuser"
+sanitize "${INPUT_GHUSEREMAIL}" "githubuser email"
+sanitize "${INPUT_GHUSERNAME}" "githubuser name"
 
 GH_USER="${INPUT_GHUSER}"
 echo "${INPUT_GHUSER}"
@@ -17,13 +22,12 @@ GH_USER_TOKEN="${INPUT_GHUSERTOKEN}"
 GH_PKG_NAME="${INPUT_PKGNAME}"
 GH_PKG_TOKEN="${INPUT_GHPKGTOKEN}"
 
-
 #CLONE REPO DOWN
 git clone https://$GH_USER:$GH_USER_TOKEN@github.com/CloudNativeGBB/app-baseline.git
 
 #GET THE LATEST TAG
-TAG=$(curl -sSk -H "Authorization: Bearer $GH_PKG_TOKEN" "https://docker.pkg.github.com/v2/cloudnativegbb/arc-k8s-demos/$GH_PKG_NAME/tags/list?n=1" | jq '.tags[0]' | tr -d  '"')
-
+TAG=$(curl -sSk -H "Authorization: Bearer $GH_PKG_TOKEN" "https://docker.pkg.github.com/v2/cloudnativegbb/arc-k8s-demos/$GH_PKG_NAME/tags/list?n=1" | jq '.tags[0]' | tr -d '"')
+echo "${TAG}"
 #GIT MODS
 cd app-baseline
 git checkout -b $TAG
@@ -40,10 +44,3 @@ PR_BODY=('{"title": "PR Auto generated based on new release","body": "New releas
 curl -u $1:$2 -d "${PR_BODY}" -H 'Content-Type: application/json' https://api.github.com/repos/cloudnativegbb/app-baseline/pulls
 time=$(date)
 echo ::set-output name=time::'now'
-
-function sanitize() {
-  if [ -z "${1}" ]; then
-    >&2 echo "Unable to find the ${2}. Did you set with.${2}?"
-    exit 1
-  fi
-}
